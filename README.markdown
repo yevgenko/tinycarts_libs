@@ -10,7 +10,7 @@ Here is various ways to add `Tinycarts` libs into your magento project, select o
 
 2. **Using git**
 
-    `git co git://github.com/yviktorov/tinycarts_libs.git lib/Tinycarts`
+    `git clone git://github.com/yviktorov/tinycarts_libs.git lib/Tinycarts`
 
 3. **Using git's submodule feature**
 
