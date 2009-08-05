@@ -18,46 +18,54 @@
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
  *
- * @category    Tinycarts
- * @package     Tinycarts_Debug
- * @copyright   Copyright (c) 2009 CHP Viktorov, entrepreneur. (http://www.tinycarts.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * PHP version 5
+ *
+ * @category  Tinycarts
+ * @package   Tinycarts_Debug
+ * @author    Yevgeniy A. Viktorov <wik@osmonitoring.com>
+ * @copyright 2009 CHP Viktorov
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @version   SVN: $Id$
+ * @link      http://github.com/yviktorov/tinycarts_libs/tree/master
  */
 
 /**
  * FirePhp wrapper
  *
- * @category    Tinycarts
- * @package     Tinycarts_Debug
- * @author      Yevgeniy A. Viktorov <wik@osmonitoring.com>
+ * @category Tinycarts
+ * @package  Tinycarts_Debug
+ * @author   Yevgeniy A. Viktorov <wik@osmonitoring.com>
+ * @license  http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link     http://github.com/yviktorov/tinycarts_libs/tree/master
  */
 class Tinycarts_Debug_Firephp
 {
     /**
-     * @see Zend_Wildfire_Plugin_FirePhp::send()
+     * Logs variables to the Firebug Console
+     * via HTTP response headers and the FirePHP Firefox Extension.
      *
-     * @author Branko Ajzele
-     * @license GPL
+     * @param object $var   The variable to log
+     * @param string $label Label to prepend to the log event
+     * @param string $style Style of the log
      *
-     * @param object $var Object we wish to debug in FireBug
-     * @param string $label Nice little label we wish to add so we can see it in FireBug
-     * @param string $style String holding one of values: ‘LOG’, ‘INFO’, ‘WARN’, ‘ERROR’, ‘TRACE’, ‘EXCEPTION’, ‘TABLE’
+     * @return void Returns null if not in developer mode
      *
-     * @return void Return null if Mage::setIsDeveloperMode(false) otherwise return message to browser
+     * @author  Branko Ajzele
+     * @license http://opensource.org/licenses/gpl-2.0.php GPL
+     * @see     Zend_Wildfire_Plugin_FirePhp::send()
      */
     public static function send($var, $label = null, $style = 'LOG')
     {
-        if(Mage::getIsDeveloperMode())
-        {
+        if (Mage::getIsDeveloperMode()) {
             $request = new Zend_Controller_Request_Http();
             $response = new Zend_Controller_Response_Http();
             $channel = Zend_Wildfire_Channel_HttpHeaders::getInstance();
             $channel->setRequest($request);
             $channel->setResponse($response);
 
-           /**
-            * Start output buffering
-            */
+            /**
+             * Start output buffering
+             */
             ob_start();
 
             Zend_Wildfire_Plugin_FirePhp::send($var, $label, $style);
@@ -67,20 +75,20 @@ class Tinycarts_Debug_Firephp
             LOG         Displays a plain log message
             INFO        Displays an info log message
             WARN        Displays a warning log message
-            ERROR       Displays an error log message that increments Firebug’s error count
+            ERROR       Displays an error log message that increments Firebug’s
+                        error count
             TRACE       Displays a log message with an expandable stack trace
             EXCEPTION   Displays an error long message with an expandable stack trace
             TABLE       Displays a log message with an expandable table
             */
 
-           /**
-            * Flush log data to browser
-            */
+            /**
+             * Flush log data to browser
+             */
             $channel->flush();
             $response->sendHeaders();
-        }
-        else
-        {
+        } else {
+
             return null;
         }
     }
